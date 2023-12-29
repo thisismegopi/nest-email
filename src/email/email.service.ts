@@ -11,7 +11,10 @@ export class EmailService {
         return file as unknown as string;
     };
 
-    buildEmailTemplate = async (templateName: string) => {
+    buildEmailTemplate = async (
+        templateName: string,
+        context: Record<string, string | string[]>,
+    ) => {
         try {
             const mjmlFile = await this.readFile(
                 path.resolve(__dirname, `templates/${templateName}/index.mjml`),
@@ -24,7 +27,9 @@ export class EmailService {
             });
 
             const template = handlebars.compile(html);
-            return template(html);
+
+            const clonedContext = Object.assign({}, context);
+            return template(clonedContext);
         } catch (error) {
             console.log(error);
             throw new InternalServerErrorException(

@@ -53,9 +53,9 @@
                     font-family="open Sans Helvetica, Arial, sans-serif"
                     padding-left="25px"
                     padding-right="25px"
-                    ><span style="color: #feeb35">Dear [[FirstName]]</span
+                    ><span style="color: #feeb35">Dear {{user_name}}</span
                     ><br /><br />
-                    Welcome to [[CompanyName]].</mj-text
+                    Welcome to {{company_name}}.</mj-text
                 >
                 <mj-text
                     align="left"
