@@ -28,7 +28,6 @@ export class EmailService {
             });
 
             const template = handlebars.compile(html);
-            console.log(template(html));
             return template(html);
         } catch (error) {
             console.log(error);
