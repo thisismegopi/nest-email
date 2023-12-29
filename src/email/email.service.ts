@@ -1,18 +1,14 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import * as fs from 'fs';
+import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as mjml2html from 'mjml/lib';
 import handlebars from 'handlebars';
 
 @Injectable()
 export class EmailService {
-    readFile = (filePath: string, encoding: any): Promise<string> => {
-        return new Promise((resolve, reject) => {
-            fs.readFile(filePath, { encoding: encoding }, (err, data) => {
-                if (err) return reject(err);
-                return resolve(data as unknown as string);
-            });
-        });
+    readFile = async (filePath: string, encoding: any): Promise<string> => {
+        const file = await fs.readFile(filePath, { encoding });
+        return file as unknown as string;
     };
 
     buildEmailTemplate = async (templateName: string) => {
