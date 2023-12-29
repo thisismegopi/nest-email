@@ -8,7 +8,7 @@ import handlebars from 'handlebars';
 export class EmailService {
     readFile = async (filePath: string, encoding: any): Promise<string> => {
         const file = await fs.readFile(filePath, { encoding });
-        return file as unknown as string;
+        return file.toString('utf8');
     };
 
     buildEmailTemplate = async (
