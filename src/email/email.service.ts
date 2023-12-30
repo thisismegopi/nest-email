@@ -12,6 +12,37 @@ export class EmailService {
         return file.toString('utf8');
     };
 
+    interpolateJson = <T>(
+        json: T,
+        values: Record<string, string | string[]>,
+    ): T => {
+        const keys = Object.keys(values);
+        keys.forEach((key) => {
+            const value = values[key];
+            if (typeof value === 'object') {
+                value.forEach((v, i) => {
+                    const regex = new RegExp(`{{${key}\\[${i}\\]}}`, 'g');
+                    json = JSON.parse(JSON.stringify(json).replace(regex, v));
+                });
+            } else {
+                const regex = new RegExp(`{{${key}}}`, 'g');
+                json = JSON.parse(JSON.stringify(json).replace(regex, value));
+            }
+        });
+        return json;
+    };
+
+    interpolateText = (
+        text: string,
+        options: Record<string, string>,
+    ): string => {
+        const translatedText = Object.keys(options).reduce((value, key) => {
+            return value.replace(`{{${key}}}`, options[key]);
+        }, text.toString());
+
+        return translatedText;
+    };
+
     buildEmailTemplate = async (
         templateName: string,
         context: Record<string, string | string[]>,
