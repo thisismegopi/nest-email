@@ -12,10 +12,7 @@ export class EmailService {
         return file.toString('utf8');
     };
 
-    interpolateJson = <T>(
-        json: T,
-        values: Record<string, string | string[]>,
-    ): T => {
+    interpolateJson = <T>(json: T, values: Record<string, string | string[]>): T => {
         const keys = Object.keys(values);
         keys.forEach((key) => {
             const value = values[key];
@@ -32,10 +29,7 @@ export class EmailService {
         return json;
     };
 
-    interpolateText = (
-        text: string,
-        options: Record<string, string>,
-    ): string => {
+    interpolateText = (text: string, options: Record<string, string>): string => {
         const translatedText = Object.keys(options).reduce((value, key) => {
             return value.replace(`{{${key}}}`, options[key]);
         }, text.toString());
@@ -66,9 +60,7 @@ export class EmailService {
             return template(clonedContext);
         } catch (error) {
             console.log(error);
-            throw new InternalServerErrorException(
-                'Failed to build email template',
-            );
+            throw new InternalServerErrorException('Failed to build email template');
         }
     };
 }
