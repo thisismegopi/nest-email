@@ -1,8 +1,9 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import * as fs from 'fs/promises';
-import * as path from 'path';
-import * as mjml2html from 'mjml/lib';
-import handlebars from 'handlebars';
+import fs from 'fs/promises';
+import Handlebars from 'handlebars';
+import HandlebarHelpers from 'handlebars-helpers';
+import mjml2html from 'mjml';
+import path from 'path';
 
 @Injectable()
 export class EmailService {
@@ -26,7 +27,9 @@ export class EmailService {
                 mjmlConfigPath: path.join(__dirname, `.mjmlconfig`),
             });
 
-            const template = handlebars.compile(html);
+            const helpers = HandlebarHelpers({ handlebars: Handlebars });
+            Handlebars.registerHelper(helpers);
+            const template = Handlebars.compile(html);
 
             const clonedContext = Object.assign({}, context);
             return template(clonedContext);
